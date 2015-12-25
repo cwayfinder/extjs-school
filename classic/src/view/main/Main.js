@@ -40,5 +40,58 @@ Ext.define('School.view.main.Main', {
     }, {
         xtype: 'schoolgrid',
         region: 'center'
-    }]
+    }],
+
+    getState: function () {
+        return {
+            'selectedChildId': this.getSelectedChildId(),
+            'getSelectedLessonIds': this.getSelectedLessonIds()
+        }
+    },
+
+    applyState: function (state) {
+        this.selectChildById(state.selectedChildId);
+        this.selectLessonsByIds(state.getSelectedLessonIds);
+    },
+
+    getSelectedChildId: function () {
+        var selectedChildId;
+        var treeSelection = this.down('schooltree').getSelectionModel().getSelection();
+        if (treeSelection.length) {
+            selectedChildId = treeSelection[0].data.id;
+        }
+        return selectedChildId;
+    },
+
+    getSelectedLessonIds: function () {
+        var selectedChildIds = [];
+        var selection = this.down('schoolgrid').getSelectionModel().getSelection();
+        if (selection.length) {
+            selection.map(function(lesson) {
+                selectedChildIds.push(lesson.get('id'));
+            });
+        }
+        return selectedChildIds;
+    },
+
+    selectChildById: function (childId) {
+        var store = Ext.data.StoreManager.lookup('schools');
+
+        var index = store.findBy(function (record, id) {
+            return record.get('mtype') === 'Child' && id === childId;
+        });
+        var record = store.getAt(index);
+        this.down('schooltree').getSelectionModel().select(record);
+    },
+
+    selectLessonsByIds: function (lessonIds) {
+        if (lessonIds) {
+            var store = Ext.data.StoreManager.lookup('lessons');
+
+            var selection = store.getRange().filter(function (record) {
+                return lessonIds.indexOf(record.get('id')) >= 0;
+            });
+            this.down('schoolgrid').getSelectionModel().select(selection);
+        }
+    }
 });

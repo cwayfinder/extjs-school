@@ -13,10 +13,6 @@ Ext.define('School.view.main.SchoolTree', {
 
     store: 'schools',
 
-    bind: {
-        selection: '{selectedChild}'
-    },
-
     listeners: {
         beforeselect: 'onBeforeChildSelect',
         select: 'onChildSelect'

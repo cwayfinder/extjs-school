@@ -6,12 +6,5 @@ Ext.define('School.view.main.MainModel', {
 
     alias: 'viewmodel.main',
 
-    data: {},
-
-    formulas: {
-        selectedChild: function (get) {
-            var store = Ext.data.StoreManager.lookup('schools');
-            return store.findRecord('mtype', 'Child');
-        }
-    }
+    data: {}
 });

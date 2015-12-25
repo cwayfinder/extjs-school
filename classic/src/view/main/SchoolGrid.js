@@ -37,5 +37,9 @@ Ext.define('School.view.main.SchoolGrid', {
             text: 'Invert Selection',
             handler: 'onInvertLessonsSelection'
         }]
+    },
+
+    listeners: {
+        select: {fn: 'onLessonsSelect', buffer: 50}
     }
 });

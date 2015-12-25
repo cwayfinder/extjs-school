@@ -9,6 +9,21 @@ Ext.define('School.view.main.MainController', {
 
     alias: 'controller.main',
 
+    init: function (view) {
+        this.selectFirstChild();
+    },
+
+    /**
+     * Selects the first Child if no one is selected
+     */
+    selectFirstChild: function () {
+        var tree = this.view.down('schooltree');
+        if (!tree.getSelection().length) {
+            var record = tree.getStore().findRecord('mtype', 'Child');
+            tree.getSelectionModel().select(record);
+        }
+    },
+
     onBeforeChildSelect: function (tree, record, index) {
         if (record.data.mtype !== 'Child') {
             return false;
@@ -42,5 +57,9 @@ Ext.define('School.view.main.MainController', {
 
         selectionModel.deselect(selection);
         selectionModel.select(Ext.Array.difference(grid.store.getRange(), selection));
+    },
+
+    onLessonsSelect: function (grid, record, index) {
+        this.view.saveState();
     }
 });
